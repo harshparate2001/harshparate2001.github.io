@@ -1,11 +1,12 @@
 import ThemeToggle from "./ui/theme-toggle";
 import { personalInfo } from "@/lib/data";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function GlassHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false); // Toast state
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const navItems = ["experience", "skills", "projects", "education"];
@@ -14,31 +15,37 @@ export default function GlassHeader() {
     const element = document.getElementById(id);
     if (!element) return;
 
-    const headerOffset = 80; // adjust according to header height
-    const elementPosition =
-        element.getBoundingClientRect().top + window.scrollY;
+    const headerOffset = 80; // adjust for sticky header
+    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
     const offsetPosition = elementPosition - headerOffset;
 
-    // Smooth scroll using requestAnimationFrame for mobile
     let start = window.scrollY;
     let distance = offsetPosition - start;
     let startTime: number | null = null;
-
-    const duration = 400; // in ms
+    const duration = 400;
 
     const step = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const progress = timestamp - startTime;
       const percentage = Math.min(progress / duration, 1);
       window.scrollTo(0, start + distance * percentage);
-      if (progress < duration) {
-        window.requestAnimationFrame(step);
-      }
+      if (progress < duration) window.requestAnimationFrame(step);
     };
 
     window.requestAnimationFrame(step);
+    setIsMenuOpen(false);
+  };
 
-    setIsMenuOpen(false); // close menu on mobile
+  const handleResumeDownload = () => {
+    const link = document.createElement("a");
+    link.href = "/resume.pdf";
+    link.download = "Harsh_Parate_Resume.pdf";
+    link.click();
+    setIsMenuOpen(false);
+
+    // Show toast
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000); // Hide after 3 seconds
   };
 
   return (
@@ -72,6 +79,18 @@ export default function GlassHeader() {
                   {item.charAt(0).toUpperCase() + item.slice(1)}
                 </motion.button>
             ))}
+
+            {/* Download Resume */}
+            <motion.button
+                onClick={handleResumeDownload}
+                className="flex items-center gap-1 cursor-pointer transition-colors hover:text-foreground/80 text-foreground/60"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2, delay: navItems.length * 0.1 }}
+                whileHover={{ y: -2 }}
+            >
+              <Download size={16} /> Resume
+            </motion.button>
           </nav>
 
           <div className="flex items-center space-x-2">
@@ -116,10 +135,33 @@ export default function GlassHeader() {
                         {item.charAt(0).toUpperCase() + item.slice(1)}
                       </motion.button>
                   ))}
+
+                  {/* Mobile Resume Download */}
+                  <motion.button
+                      onClick={handleResumeDownload}
+                      className="flex items-center gap-1 w-full text-left cursor-pointer transition-colors hover:text-foreground/80 text-foreground/60 py-2"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.2, delay: navItems.length * 0.1 }}
+                  >
+                    <Download size={16} /> Resume
+                  </motion.button>
                 </nav>
               </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Toast Notification */}
+        {showToast && (
+            <motion.div
+                className="fixed bottom-6 right-6 bg-black text-white px-4 py-2 rounded-lg shadow-lg z-50"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+            >
+              ✅ Your download has started!
+            </motion.div>
+        )}
       </header>
   );
 }
