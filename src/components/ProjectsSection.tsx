@@ -54,7 +54,9 @@ export default function ProjectsSection() {
                   <div className="flex flex-col md:flex-row items-start gap-6 w-full">
                     {/* ==== PROJECT CARD ==== */}
                     <GlassCard
-                        ref={(el) => { cardRefs.current[index] = el ?? undefined; }}
+                        ref={(el) => {
+                          cardRefs.current[index] = el ?? undefined;
+                        }}
                         className="group overflow-hidden dark:border-purple-500/10 w-full md:w-1/2 flex flex-col"
                     >
                       <CardHeader className="bg-gradient-to-r from-purple-500/5 to-pink-500/5">
@@ -126,16 +128,18 @@ export default function ProjectsSection() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   className="relative max-w-full w-full sm:max-w-3xl flex items-center justify-center"
               >
+                {/* Close button with better contrast */}
                 <button
-                    className="absolute top-3 right-3 bg-white/10 hover:bg-white/20 p-2 rounded-full text-white z-10"
+                    className="absolute top-3 right-3 bg-white/60 hover:bg-white/80 p-2 rounded-full text-black z-10 shadow-md transition"
                     onClick={() => setSelectedImage(null)}
                 >
                   <X size={22} />
                 </button>
+
                 <img
                     src={selectedImage}
                     alt="Full View"
-                    className="max-w-[90vw] max-h-[80vh] w-auto h-auto rounded-lg object-contain"
+                    className="max-w-[90vw] max-h-[80vh] w-auto h-auto rounded-lg object-contain bg-white/10"
                     onClick={(e) => e.stopPropagation()}
                 />
               </motion.div>
