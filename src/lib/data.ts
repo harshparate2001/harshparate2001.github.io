@@ -94,7 +94,7 @@ export const skills = {
 export const projects = [
     {
         title: "EcomStore – Android E-Commerce App",
-        github: "https://github.com/harshparate2001/EcomStoreAndroid",
+        github: "https://github.com/harshparate2001/EcomStoreDroid",
         images: [
             "/projects/1.png",
             "/projects/2.png",
