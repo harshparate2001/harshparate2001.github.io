@@ -2,12 +2,12 @@
   "name": "my-portfolio",
   "type": "module",
   "version": "0.0.1",
-  "description": "Modern portfolio template with animations and glassmorphism effects",
-  "author": "Rishikesh S",
+  "description": "Showcasing my projects, skills, and experience as an Android Developer specializing in Kotlin, Java, and modern app architecture.",
+  "author": "Harsh Parate",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rishikesh2003/my-portfolio"
+    "url": "https://github.com/harshparate2001/harshparate2001.github.io"
   },
   "scripts": {
     "dev": "astro dev",
